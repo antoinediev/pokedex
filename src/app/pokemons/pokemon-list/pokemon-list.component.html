@@ -1,5 +1,10 @@
-<mat-list infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50"> 
-  <mat-list-item *ngFor="let pokemon of pokemons?.data" routerLink='/pokemonDetails/{{pokemon.id}}' routerLinkActive="active">
+
+  <mat-form-field>
+    <input matInput search placeholder="Search" [(ngModel)]="searchInput" (keyup)="onKey();">
+  </mat-form-field>
+
+<mat-list infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [scrollWindow]="false" class="list-pokedex"> 
+  <mat-list-item *ngFor="let pokemon of pokemons?.data" (click)="changePokemon(pokemon.id)" >
     <img matListAvatar src="../../../assets/img/sprites/{{pokemon.id}}.png" alt="...">
     <h3 matLine > {{pokemon.id}}. {{pokemon.name}} </h3>
   </mat-list-item>

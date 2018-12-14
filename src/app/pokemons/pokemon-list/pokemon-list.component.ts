@@ -1,5 +1,5 @@
 import { PokemonService } from './../services/pokemon.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 @Component({
   selector: 'app-pokemon-list',
   templateUrl: './pokemon-list.component.html',
@@ -7,17 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PokemonListComponent implements OnInit {
 
+  @Output() changed = new EventEmitter<string>();
+
   pokemons;
   offset = 0;
   limit = 15;
+  searchInput;
 
   constructor(private pokemonService: PokemonService) { }
 
   ngOnInit() {
-    this.pokemonService.getPokemonsWithParams(this.offset, this.limit).subscribe(pokemons => {
-      this.pokemons = pokemons;
-      console.log(this.pokemons);
-    });
+    this.getPokemons();
   }
 
   onScroll() {
@@ -27,9 +27,26 @@ export class PokemonListComponent implements OnInit {
       for (const pokemon of pokemons.data) {
         this.pokemons.data.push(pokemon);
       }
-      //console.log(pokemons.data);
-      //console.log(this.pokemons);
     });
   }
 
+  onKey() {
+    if (this.searchInput) {
+      this.pokemonService.getPokemonWithSearch(this.searchInput).subscribe( pokemons => {
+        this.pokemons = pokemons;
+      });
+    } else {
+      this.getPokemons();
+    }
+  }
+
+  getPokemons() {
+    this.pokemonService.getPokemonsWithParams(this.offset, this.limit).subscribe(pokemons => {
+      this.pokemons = pokemons;
+    });
+  }
+
+  changePokemon(id) {
+    this.changed.emit(id);
+  }
 }

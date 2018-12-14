@@ -1,7 +1,4 @@
-<button mat-icon-button routerLink='' routerLinkActive="active">
-  <mat-icon>navigate_before</mat-icon>
-</button>
-<mat-card *ngIf="pokemon">
+<mat-card *ngIf="pokemon$ | async as pokemon">
     <mat-grid-list cols='2' [rowHeight]="100">
       <mat-grid-tile [colspan]="1" [rowspan]="2" class="tile-image">
         <img src="../../../assets/img/official-artwork/{{pokemon.id}}.png" height="150px" *ngIf="pokemon">

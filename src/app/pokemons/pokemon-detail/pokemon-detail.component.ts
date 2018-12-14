@@ -1,33 +1,21 @@
 import { PokemonService } from './../services/pokemon.service';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-pokemon-detail',
   templateUrl: './pokemon-detail.component.html',
   styleUrls: ['./pokemon-detail.component.scss']
 })
-export class PokemonDetailComponent implements OnInit {
+export class PokemonDetailComponent implements OnChanges {
 
-  pokemonId;
-  pokemon;
+  @Input() pokemonId;
+  pokemon$;
 
-  constructor(private pokemonService: PokemonService, private activatedRoute: ActivatedRoute) { }
+  constructor(private pokemonService: PokemonService) { }
 
-  ngOnInit() {
-    this.pokemonId = this.activatedRoute.snapshot.paramMap.get('pokemonId');
-    this.pokemonService.getPokemon(this.pokemonId).subscribe( pokemon => {
-      this.pokemon = pokemon;
-     // this.playCry(this.pokemon.id);
-    });
+  ngOnChanges(changes: SimpleChanges) {
+    this.pokemon$ = this.pokemonService.getPokemon(this.pokemonId);
   }
-
-  /*playCry(id) {
-    const audio = new Audio();
-    audio.src = '../../../assets/audio/' + id + '.mp3';
-    audio.load();
-    audio.play();
-  }*/
 
 
 

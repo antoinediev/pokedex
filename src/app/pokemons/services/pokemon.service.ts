@@ -22,4 +22,8 @@ export class PokemonService {
   getPokemonsWithParams(offset, limit): Observable<PagedData<Pokemon>> {
     return this.http.get<PagedData<Pokemon>>(environment.pokedexApiUrl + '/pokemons?offset=' + offset + '&limit=' + limit);
   }
+
+  getPokemonWithSearch(search: string): Observable<PagedData<Pokemon>> {
+    return this.http.get<PagedData<Pokemon>>(environment.pokedexApiUrl + '/pokemons?search=' + search);
+  }
  }
